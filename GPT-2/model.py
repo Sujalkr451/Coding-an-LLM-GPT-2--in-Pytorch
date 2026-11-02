@@ -27,4 +27,14 @@ class TransformerBlock(nn.Module):
         x=self.feedforward(x)
         x=x+residual2
         return x
-    
+
+class GPT2Model(nn.Module):
+    """
+    GPT-2 Model Module.
+    This module implements the GPT-2 model, consisting of an embedding layer, multiple transformer blocks, and a final linear layer for output generation.
+    """
+    def __init__(self, config):
+        super().__init__()
+
+    def forward(self,x):
+        pass
