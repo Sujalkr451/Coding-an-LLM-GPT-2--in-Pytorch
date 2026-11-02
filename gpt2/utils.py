@@ -35,8 +35,8 @@ class LayerNorm(nn.Module):
         self.beta=nn.Parameter(torch.zeros(cfg['embedding_dim']))
 
     def forward(self,x):
-        mean=x.mean(x.shape[-1], keepdim=True)
-        var=x.var(x.shape[-1], keepdim=True, unbiased=False)
+        mean=x.mean(dim=-1, keepdim=True)
+        var=x.var(dim=-1, keepdim=True, unbiased=False)
         x_norm=(x-mean)/torch.sqrt(var+self.eps)
 
         return self.gamma*x_norm+self.beta
@@ -91,13 +91,10 @@ class FeedForward(nn.Module):
         self.linear1=nn.Linear(config['embedding_dim'], 4*config['embedding_dim'])
         self.linear2=nn.Linear(4*config['embedding_dim'], config['embedding_dim'])
         self.activation=GELU()
-        self.dropout=nn.Dropout(config['dropout'])
 
     def forward(self,x):
         x=self.linear1(x)
         x=self.activation(x)
-        x=self.dropout(x)
         x=self.linear2(x)
-        x=self.dropout(x)
 
         return x
