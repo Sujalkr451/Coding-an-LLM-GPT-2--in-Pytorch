@@ -1,0 +1,10 @@
+Generated with the built-in image generation tool.
+
+Use case: illustration-story
+Asset type: wide GitHub README header illustration, 3:1 landscape.
+Primary request: a charming hand-drawn pencil and black ink sketch of Popeye the Sailor studying a transformer block in an open notebook. Recognizable sailor cap, squinting eye, pipe, huge forearms and anchor tattoo. He sits at a simple desk, pencil in hand, thoughtfully looking down at a few small connected boxes on the notebook page. Small spinach tin beside notebook.
+Style/medium: restrained vintage newspaper cartoon drawn on warm ivory paper, expressive economical ink contours, uneven graphite underdrawing, light crosshatching, tiny erasure traces. Confident human sketchbook drawing with natural asymmetry and generous blank margins. Mostly black and graphite, just a muted spinach-green accent.
+Composition: single coherent scene centered across a wide short banner, full character upper body and desk visible, uncluttered.
+Text: no text, no lettering.
+Avoid: glossy digital rendering, 3D, gradients, cute robot mascots, busy infographic, excessive paper distress, random annotations, watermarks.
+
