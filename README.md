@@ -2,15 +2,15 @@
 
 # GPT-2, piece by piece
 
-I’m building the pieces of GPT-2 in PyTorch to understand what happens inside a transformer. Right now, this folder has the attention layer, feed-forward network, and a transformer block wired together. The full language model is still to come.
+I’m building a GPT-2-style language model in PyTorch to understand how the pieces work together. The `gpt2/` folder now has the full forward pass: token and position embeddings, 12 transformer blocks, final normalization, and an output head that produces vocabulary logits.
 
-## Inside `GPT-2/`
+## Inside `gpt2/`
 
 | File | What’s in it |
 | --- | --- |
-| [`config.py`](GPT-2/config.py) | Model dimensions, context length, dropout, and attention bias settings. |
-| [`model.py`](GPT-2/model.py) | `TransformerBlock`: attention and feed-forward layers, each preceded by layer normalization and followed by a residual connection. |
-| [`utils.py`](GPT-2/utils.py) | Custom GELU and layer normalization, causal multi-head attention, and the feed-forward network. |
+| [`config.py`](gpt2/config.py) | Model dimensions, context length, dropout, and bias settings. |
+| [`GPTModel.py`](gpt2/GPTModel.py) | `TransformerBlock` and `GPT2Model`, including embeddings, the block stack, and output head. |
+| [`utils.py`](gpt2/utils.py) | Custom GELU, layer normalization, causal multi-head attention, and feed-forward layers. |
 
 The block is arranged like this:
 
@@ -24,7 +24,9 @@ LayerNorm → causal attention → add
                        LayerNorm → feed-forward → add → output
 ```
 
-The attention layer splits queries, keys, and values across heads and masks future positions. The feed-forward network expands the embedding dimension by four, applies GELU and dropout, then projects back down.
+**Built from scratch:** causal multi-head attention (Q/K/V projections, head splitting, masking, and attention weights), layer normalization, GELU, the feed-forward network, and transformer blocks with residual connections. The model is assembled manually using PyTorch tensors and basic layers such as `nn.Linear`, `nn.Embedding`, and `nn.Dropout`.
+
+The feed-forward network expands 768 features to 3,072, applies GELU, then projects back down. Dropout is applied around the embeddings and block residual branches.
 
 ## Current configuration
 
@@ -34,14 +36,18 @@ The attention layer splits queries, keys, and values across heads and masks futu
 | Context length | 1,024 |
 | Embedding dimension | 768 |
 | Attention heads | 12 |
-| Configured transformer layers | 12 |
+| Transformer layers | 12 |
 | Dropout | 0.1 |
 
-Query, key, value, and attention output projection biases are disabled in the config. The layer count is configured here; the stack of 12 blocks hasn’t been assembled yet.
+Query, key, value, and attention output projection biases are disabled. Token embeddings and the output head have separate weights.
+
+## Parameters and space
+
+The current model has **163,000,320 trainable parameters (163M)**. Its FP32 weights take about **652 MB (622 MiB)**. The 12 stored causal masks add another **48 MiB**, bringing weights plus buffers to roughly **670 MiB**, before checkpoint overhead. Training needs more memory for activations, gradients, and optimizer state.
 
 ## Work in progress
 
-`GPT-2/` doesn’t yet include token or position embeddings, a full model wrapper, an output head, training, or text generation. These are building blocks I’m still working through, rather than a finished GPT-2 implementation.
+The architecture is wired up, but `gpt2/` doesn’t yet include a training loop, pretrained weight loading, or a text-generation loop. This is a learning implementation, with randomly initialized weights.
 
 ## License
 

@@ -49,18 +49,21 @@ class GPT2Model(nn.Module):
         self.output_head=nn.Linear(config['embedding_dim'], config['vocab_size'], bias=False)
 
 
-    def forward(self,x):
-        batch_size, seq_length=x.shape
-        positions=torch.arange(0, seq_length, device=x.device).unsqueeze(0).expand(batch_size, seq_length)
-        x=self.token_embedding(x)+self.postional_embedding(positions)
+    def forward(self,input_ids):
+        batch_size, seq_length=input_ids.shape
+
+        token_embedding=self.token_embedding(input_ids)
+
+        positions_embed=self.postional_embedding(torch.arange(0, seq_length, device=input_ids.device))
+
+        x=token_embedding+positions_embed
         
         x=self.dropout(x)
-
-        
 
         x=self.transformer_blocks(x)
         
         x=self.final_layernorm(x)
+
         logits=self.output_head(x)
 
         return logits
