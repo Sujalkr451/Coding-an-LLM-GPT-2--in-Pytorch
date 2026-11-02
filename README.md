@@ -42,3 +42,7 @@ Query, key, value, and attention output projection biases are disabled in the co
 ## Work in progress
 
 `GPT-2/` doesn’t yet include token or position embeddings, a full model wrapper, an output head, training, or text generation. These are building blocks I’m still working through, rather than a finished GPT-2 implementation.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
